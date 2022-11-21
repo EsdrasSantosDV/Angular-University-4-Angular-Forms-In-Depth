@@ -4,19 +4,21 @@
 
 <!--    PRA RASTREAR O FORM E VER O ESTADO DE VALIDAÇÃO SE ELE E VALIDO OU NÃO-->
 <!--    SEM OS FORM CONTROLS NÃO SERVE PRA NADA-->
+<!--    FORM CONTROL E BASICAMENTE UM INSTANCIAMENTO  DE UM CONTROLE DE FORMULARIO, ELE VINCULA
+ O CONTROLE DO TEMPLATE COM O CONTROLE DO FORMULARIO -->
     <form class="login-form data-form" #loginForm="ngForm">
 
       <mat-form-field appearance="outline">
 <!--cCRIAR UMA REFERENCIA DE TEMPLATE-->
         <input matInput type="email" name="email"
-               placeholder="Email" ngModel #email="ngModel">
+               placeholder="Email" ngModel #email="ngModel" required>
 
       </mat-form-field>
 
       <mat-form-field  appearance="outline">
 
 
-        <input matInput type="password" placeholder="Password" name="password" ngModel #password="ngModel">
+        <input matInput type="password" placeholder="Password" name="password" ngModel #password="ngModel" required>
 
       </mat-form-field>
 
@@ -27,7 +29,7 @@
     </form>
 
     <div class="form-val">
-      {{email.value + '   ' +password.value}}
+      {{email.valid + '   ' +password.value}}
     </div>
 
   </mat-card-content>
