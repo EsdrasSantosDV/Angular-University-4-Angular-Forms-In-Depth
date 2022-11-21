@@ -1,4 +1,4 @@
-import {BrowserModule} from '@angular/platform-browser';
+ import {BrowserModule} from '@angular/platform-browser';
 import {forwardRef, NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
