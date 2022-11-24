@@ -2,18 +2,19 @@
   <mat-card-title>Login (Reactive)</mat-card-title>
   <mat-card-content>
 
-    <form class="login-form data-form">
+    <form [formGroup]="form" class="login-form data-form">
 
       <mat-form-field>
 
+<!--        FORM CONTROL NAME LINKA ESSE INPUT AO CONTROL DECLARADO NO MODEL-->
         <input matInput type="email" name="email"
-               placeholder="Email">
+               placeholder="Email" formControlName="email">
 
       </mat-form-field>
 
       <mat-form-field>
 
-        <input matInput type="password" placeholder="Password">
+        <input matInput type="password" placeholder="Password" formControlName="password">
 
       </mat-form-field>
 
@@ -22,6 +23,16 @@
       </button>
 
     </form>
+
+<!--    FORM VALUE MOSTRA O VALOR DE TODO O FORM-->
+    <div class="form-val">
+      {{form.value| json}}
+    </div>
+
+<!--    O VALID DEMONSTRA O ESTADO DO FORM, SE O USUARIO BASCIAMENTE PRENCHEU TUDO CERTINHO-->
+    <div class="form-val">
+      {{form.valid}}
+    </div>
 
   </mat-card-content>
 </mat-card>
