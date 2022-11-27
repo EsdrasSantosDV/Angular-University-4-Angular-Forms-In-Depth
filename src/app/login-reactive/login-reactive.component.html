@@ -6,16 +6,17 @@
 
       <mat-form-field>
 
-<!--        PODE USAR TAMBEM O [formControl]-->
+<!--        PODE USAR TAMBEM O [formControl] MAS NÃO QUANDO USA O FORM BUILDER-->
 <!--        FORM CONTROL NAME LINKA ESSE INPUT AO CONTROL DECLARADO NO MODEL-->
+<!--        ESSA SINTAXE E PREFERIDA DO QUE A FORM CONTROL NAME-->
         <input matInput type="email" name="email"
-               placeholder="Email" [formControl]="email">
+               placeholder="Email" formControlName="email">
 
       </mat-form-field>
 
       <mat-form-field>
 
-        <input matInput type="password" placeholder="Password" [formControl]="password">
+        <input matInput type="password" placeholder="Password" formControlName="password">
 
       </mat-form-field>
 
