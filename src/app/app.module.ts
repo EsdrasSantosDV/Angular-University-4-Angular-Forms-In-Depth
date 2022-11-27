@@ -42,24 +42,26 @@ import {CreateCourseStep1Component} from './create-course/create-course-step-1/c
 import {FileUploadComponent} from './file-upload/file-upload.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {LoginReactiveComponent} from './login-reactive/login-reactive.component';
+ import {OnlyOneErrorPipe} from './pipes/only-one-error.pipe';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomeComponent,
-        AboutComponent,
-        CourseComponent,
-        CoursesCardListComponent,
-        CourseDialogComponent,
-        LoginComponent,
-        CreateCourseComponent,
-        CreateCourseStep1Component,
-        CreateCourseStep2Component,
-        CreateCourseStep3Component,
-        AddressFormComponent,
-        FileUploadComponent,
-        LoginReactiveComponent
-    ],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    AboutComponent,
+    CourseComponent,
+    CoursesCardListComponent,
+    CourseDialogComponent,
+    LoginComponent,
+    CreateCourseComponent,
+    CreateCourseStep1Component,
+    CreateCourseStep2Component,
+    CreateCourseStep3Component,
+    AddressFormComponent,
+    FileUploadComponent,
+    LoginReactiveComponent,
+    OnlyOneErrorPipe
+  ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
