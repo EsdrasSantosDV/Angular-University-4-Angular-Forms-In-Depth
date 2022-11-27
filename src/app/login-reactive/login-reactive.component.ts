@@ -16,12 +16,15 @@ export class LoginReactiveComponent implements OnInit {
 
 
   //A VANTAGEM DE UTILZIAR O FORM BUILDER E TER UAM IMPLEMENTAÇÃO MASI CONCISA
+  //NOS DA MAIS PODER DE CONTROLE TANTO PROS CONTROLES, TANTO PRA DIMINUIÇÇÃO DE CODIGO
   form=this.fb.group(
     {
       //PRIMEIRO E O INCIIAL VALOR
       //SEGUNDO E O ARRAY DO SINCRONOS VALIDATORS
       //MAS PODEMOS FAZER UMA CONFIGURAÇÃO MAIOR COMO NO EMAIL
-      email: ['',{validators:[Validators.required,Validators.email],updateOn:'blur'}],
+
+    //COM O FORM VUILDER PODEMOS COLOCAR O CAMPO PRA NUNCA SER NULL POR DEFAULT
+      email:this.fb.nonNullable.control("",{validators:[Validators.required,Validators.email],updateOn:'blur'}),
       password:['',[Validators.required,Validators.minLength(8),createPassowrdStrengthValidator()]]
     }
   )
@@ -29,10 +32,11 @@ export class LoginReactiveComponent implements OnInit {
 
 
 
+  //TAMBEM TEMOS O NonNullableFormBuilder,ONDE NÃO PRECIAMOS COLOCAR O NON NULABLE NOS CONTROLE
   constructor(private fb:FormBuilder) {
 
     //PODEMOS FAZER UM INDENPENDETE CONTROLE
-    fb.control('',)
+  //fb.control('',)
 
   }
 
@@ -51,4 +55,23 @@ export class LoginReactiveComponent implements OnInit {
   }
 
 
+
+  //FORM GROUP TEM O TIPO ANY POR DEFAULT
+  //PRA TER O MAXIMO EFEITO E CRIAR DO JEITO QUE TA EMCIMA
+  login() {
+    const formValue=this.form.value;
+
+    this.form.patchValue({
+
+    })
+  }
+
+  reset() {
+    //RESETAMOS O FORM PRA DEFAULT VALUE, QUE SERIA O NULL POR PADRAO
+    //MAS SE NO CONTROL DIZERMOS QUE O CONTROLE NÃO PODE TER VALOR NULO,
+    // LE VAI RESETAR PRO VALOR QUE COLOCAMOS COMO DEFAULT NA CRIAÇÃO DO CONTROLE
+    this.form.reset();
+
+    console.log(this.form.value);
+  }
 }
