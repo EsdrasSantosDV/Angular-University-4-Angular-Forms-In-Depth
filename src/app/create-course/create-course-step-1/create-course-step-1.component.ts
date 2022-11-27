@@ -42,6 +42,25 @@ export class CreateCourseStep1Component implements OnInit {
 
   ngOnInit() {
     this.courseCategories$=this.courseService.findCourseCategories();
+
+    //VAMOS DIZER QUE O USUARIO SAIU E FOI PRA OUTRA COMPOENNT
+    //VAMOS SALVAR NO LOCAL STORAGE DO NAVEGADOR
+    //E PEGAR O FORMULARIO VALIDO
+    //E DEPOIS QUANDO ELE VOLTAR PRO CRIAR SETAR NO VALOR DO FORM
+    const draft=localStorage.getItem("STEP_1");
+    if(draft)
+    {
+
+      //PATCH VALUE TROCA OS CAMPOS E IGNORA OS OUTROS
+      this.form.setValue(JSON.parse(draft));
+      //SET VALUE E TODOS
+    }
+    this.form.valueChanges.pipe(
+      filter(()=> this.form.valid)
+    ).subscribe(val=>
+      //SALVAR EM LOCAL STORAGE O FORMULARIO 1
+      localStorage.setItem("STEP_1",JSON.stringify(val)));
+
   }
 
 
