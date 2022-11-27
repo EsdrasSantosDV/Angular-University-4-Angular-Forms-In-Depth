@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, NonNullableFormBuilder, Validators} from '@angular/forms';
 import {createPassowrdStrengthValidator} from '../validators/password-strength-validator';
 
 
@@ -24,7 +24,7 @@ export class LoginReactiveComponent implements OnInit {
       //MAS PODEMOS FAZER UMA CONFIGURAÇÃO MAIOR COMO NO EMAIL
 
     //COM O FORM VUILDER PODEMOS COLOCAR O CAMPO PRA NUNCA SER NULL POR DEFAULT
-      email:this.fb.nonNullable.control("",{validators:[Validators.required,Validators.email],updateOn:'blur'}),
+      email:['',{validators:[Validators.required,Validators.email],updateOn:'blur'}],
       password:['',[Validators.required,Validators.minLength(8),createPassowrdStrengthValidator()]]
     }
   )
@@ -33,7 +33,7 @@ export class LoginReactiveComponent implements OnInit {
 
 
   //TAMBEM TEMOS O NonNullableFormBuilder,ONDE NÃO PRECIAMOS COLOCAR O NON NULABLE NOS CONTROLE
-  constructor(private fb:FormBuilder) {
+  constructor(private fb:NonNullableFormBuilder) {
 
     //PODEMOS FAZER UM INDENPENDETE CONTROLE
   //fb.control('',)
