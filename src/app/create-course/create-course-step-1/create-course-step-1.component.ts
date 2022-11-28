@@ -25,6 +25,7 @@ export class CreateCourseStep1Component implements OnInit {
       asyncValidators:[courseTitleValidator(this.courseService )],
       updateOn:'blur'
     }],
+    address:[null,Validators.required],
     releaseDateAt:[new Date(),Validators.required],
     category:['BEGINNER',Validators.required],
     downloadsAllowed:[false,Validators.requiredTrue],

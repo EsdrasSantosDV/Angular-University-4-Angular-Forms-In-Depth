@@ -77,7 +77,7 @@ export class FileUploadComponent implements ControlValueAccessor,Validator{
 
       this.fileUploadError = false;
 
-      this.http.post("/api/thumbnail-upload", formData, {
+      this.http.post("http://localhost:9000/api/thumbnail-upload", formData, {
         reportProgress: true,
         observe: 'events'
       })
