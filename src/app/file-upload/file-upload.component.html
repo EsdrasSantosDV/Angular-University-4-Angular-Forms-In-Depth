@@ -1,2 +1,21 @@
+<!--FILE UPLOAD COMPONENT TEM DUAS PARTES-->
+<!-- UMA DELAS E A IMPROTAÇÃO DO ARQUVIO QEU É INVISIVEL PRO USER-->
+<input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+
+<!--A SEGUNDA E A VISUALIZAÇÃO O NOME DO ARQUIVO -->
+<div class="file-upload">
+
+  <mat-form-field >
+    <input matInput [disabled]="true" [value]="fileName">
+  </mat-form-field>
+
+  <button mat-mini-fab color="primary" class="upload-btn"  [disabled]="disabled"
+          (click)="OnClick(fileUpload)">
+    <mat-icon>attach_file</mat-icon>
+  </button>
 
 
+</div>
+
+
+<mat-progress-bar class="progress-bar" mode="determinate"  *ngIf="uploadProgress"  [value]="uploadProgress"></mat-progress-bar>

@@ -18,12 +18,17 @@ export class CreateCourseStep2Component implements OnInit {
       Validators.max(9999),
       Validators.pattern("[0-9]+")
     ]],
+    thumbnail:[null],
     promoStartAt:[null],
     promoEndAt:[null],
 
-  },{
+
+
+    },{
     validators:[createPromoRangeValidator()],
-    updateOn:'blur'
+    //NO CASO QUE TEMOS O THUMBNAIL QUE É UM FILE COMPONENT COM UM VALOR ACESSOR
+    // NÃOE  UMA BOA IDEIA COLOCAR O UPTADEON BLUR
+    //updateOn:'blur'
     }
 
   );
