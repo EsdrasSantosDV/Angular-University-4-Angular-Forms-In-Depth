@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {HttpClient, HttpEventType} from '@angular/common/http';
 import {catchError, finalize} from 'rxjs/operators';
-import {AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator} from '@angular/forms';
+import {AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator} from '@angular/forms';
 import {noop, of} from 'rxjs';
 import {error} from 'protractor';
 
@@ -13,7 +13,17 @@ import {error} from 'protractor';
   //PRECISAMOS DESSA INJECÃO NO SISTEMA DE DEPENDCIA DO ANGULAR
   providers:[
     {
+
+      //INJEÇÃO DO TOKEN
+      //Todas as classes que implementam a ControlValueAccessor interface são fornecidas
+      // por meio do NG_VALUE_ACCESSORtoken.
+      // Angular usa esse token para pegar ControlValueAccessore conectar a FormControlele.
       provide:NG_VALUE_ACCESSOR,
+      multi:true,
+      useExisting:FileUploadComponent
+    },
+    {
+      provide:NG_VALIDATORS,
       multi:true,
       useExisting:FileUploadComponent
     }
@@ -23,82 +33,118 @@ import {error} from 'protractor';
 
 //IMPLEMENTAR NÃO E O SUFICIENTE
 //PRECISAMOS INJETAR NO ANGULAR DEPENDENCY SYSTEM PEKA CONFIGURAÇÃO A CIMA
-export class FileUploadComponent implements ControlValueAccessor{
+export class FileUploadComponent implements ControlValueAccessor,Validator{
 
-  @Input()requiredFileType:string;
-  fileName='';
-  fileUploadError=false;
-  uploadProgress: number;
-  onChange=(fileName:string)=>{};
-  onTouched=()=>{};//QUANDO TOCA NO FORM FIELD
-  disabled:boolean=false;
+  @Input()
+  requiredFileType:string;
 
-  constructor(private http:HttpClient) {
+  fileName = '';
+
+  fileUploadError = false;
+
+  fileUploadSuccess = false;
+
+  uploadProgress:number;
+
+  onChange = (fileName:string) => {};
+
+  onTouched = () => {};
+
+  onValidatorChange = () => {};
+
+  disabled : boolean = false;
+
+  constructor(private http: HttpClient) {
+
   }
 
+  onClick(fileUpload: HTMLInputElement) {
+    this.onTouched();
+    fileUpload.click();
+  }
 
   onFileSelected(event) {
-    //NESSE EXEMPLO E SO UM
-   const file:File= event.target.files[0];
 
-   //FUNCIONALIDADE DO CANCELAMENTO
-    if(file)
-    {
-      this.fileName=file.name;
-      console.log(this.fileName);
+    const file:File = event.target.files[0];
 
-      //PRECISAMOS CRIAR UM PAYLOAD
-      //TAMO CRAINDO MANUALEMNETE
-      const formData=new FormData();
+    if (file) {
 
-      formData.append("thumbnail",file);
+      this.fileName = file.name;
 
-      this.fileUploadError=false;
-      //VAMOS MANDAR PRO BACKEND
-      this.http.post("http://localhost:9000/api/thumbnail-upload",formData,{
-        reportProgress:true,
-        observe:'events'
-      }).
-        pipe(catchError(error => {
-          this.fileUploadError=true;
-          return of(error);
-      }),
-        finalize(()=>{
-          this.uploadProgress=null;
-        })
-      ).subscribe(event=>{
-        if(event.type ==HttpEventType.UploadProgress)
-        {
-          this.uploadProgress=Math.round(100*event.loaded / event.total)
-        }
-        else if(event.type==HttpEventType.Response){
-          this.onChange(this.fileName);
-        }
-      });
+      const formData = new FormData();
+
+      formData.append("thumbnail", file);
+
+      this.fileUploadError = false;
+
+      this.http.post("/api/thumbnail-upload", formData, {
+        reportProgress: true,
+        observe: 'events'
+      })
+        .pipe(
+          catchError(error => {
+            this.fileUploadError = true;
+            return of(error);
+          }),
+          finalize(() => {
+            this.uploadProgress = null;
+          })
+        )
+        .subscribe(event => {
+          if (event.type == HttpEventType.UploadProgress) {
+            this.uploadProgress = Math.round(100 * (event.loaded / event.total));
+          }
+          else if (event.type == HttpEventType.Response) {
+            this.fileUploadSuccess = true;
+            this.onChange(this.fileName);
+            this.onValidatorChange();
+          }
+        });
+
+
 
     }
-
 
   }
 
   writeValue(value: any) {
-    this.fileName=value;
+    this.fileName = value;
   }
+
   registerOnChange(onChange: any) {
-    this.onChange=onChange;
+    this.onChange = onChange;
   }
 
   registerOnTouched(onTouched: any) {
-    this.onTouched=onTouched;
+    this.onTouched = onTouched;
   }
 
-  setDisabledState(isDisabled: boolean) {
-    this.disabled=isDisabled;
+  setDisabledState(disabled: boolean) {
+    this.disabled = disabled;
+  }
+
+  registerOnValidatorChange(onValidatorChange: () => void) {
+    this.onValidatorChange = onValidatorChange;
+  }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+
+    if (this.fileUploadSuccess) {
+      return null;
+    }
+
+    let errors: any = {
+      requiredFileType: this.requiredFileType
+    };
+
+    if (this.fileUploadError) {
+      errors.uploadFailed = true;
+    }
+
+    return errors;
   }
 
 
-  OnClick(fileUpload: HTMLInputElement) {
-    this.onTouched();
-    fileUpload.click();
-  }
+
+
 }
