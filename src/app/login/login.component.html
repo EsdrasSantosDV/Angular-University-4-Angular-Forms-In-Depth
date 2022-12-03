@@ -6,12 +6,23 @@
 <!--    SEM OS FORM CONTROLS NÃO SERVE PRA NADA-->
 <!--    FORM CONTROL E BASICAMENTE UM INSTANCIAMENTO  DE UM CONTROLE DE FORMULARIO, ELE VINCULA
  O CONTROLE DO TEMPLATE COM O CONTROLE DO FORMULARIO -->
-    <form class="login-form data-form" #loginForm="ngForm">
+    <form class="login-form data-form" #loginForm="ngForm" (ngSubmit)="login(loginForm,$event)">
 
       <mat-form-field appearance="outline">
 <!--cCRIAR UMA REFERENCIA DE TEMPLATE-->
+
+<!--        nG MODEL CHANGE A CADA VEZ QUE O VALOR MUDA DESSE CONTROLE -->
+<!--        PODEMOS CUSTOMIZAR AS OPCOES-->
+<!--        COLOCAR PRA ATUALIZAR O VLAOR DO NG MODEL SO QUANDO APERTAR O TAB, OU QUANDO DAR SUBMIT-->
         <input matInput type="email" name="email"
-               placeholder="Email" ngModel #email="ngModel" required>
+               placeholder="Email"
+               [ngModelOptions]="{updateOn:'blur'}"
+               (ngModelChange)="onEmailChange($event)"
+               ngModel #email="ngModel" email minlength="3"  maxlength="20" required>
+        <mat-error *ngIf="email.errors?.required"> The email is Mandatory</mat-error>
+        <mat-error *ngIf="email.errors?.minlength"> Your email must have minimum {{email.errors?.minlength.requiredLength}} chars,
+          but it only has {{email.errors?.minlength.actualLength}}.</mat-error>
+        <mat-error *ngIf="email.errors?.email">This is not a valid email.</mat-error>
 
       </mat-form-field>
 
@@ -20,19 +31,25 @@
 
         <input matInput type="password" placeholder="Password" name="password" ngModel #password="ngModel" required>
 
+        <mat-error *ngIf="password.errors?.required"> The Password is Mandatory</mat-error>
+
       </mat-form-field>
 
 
 
-        <button mat-raised-button color="primary" (click)="login(loginForm)">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
         Login
       </button>
 
     </form>
 
     <div class="form-val">
-      {{email.valid + '   ' +password.value}}
+      {{email.value|json}}
+      {{email.errors |json}}
+      {{email.valid }}
     </div>
+
+
 
   </mat-card-content>
 </mat-card>
