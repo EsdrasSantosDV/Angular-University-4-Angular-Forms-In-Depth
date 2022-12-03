@@ -14,9 +14,10 @@
 <!--        nG MODEL CHANGE A CADA VEZ QUE O VALOR MUDA DESSE CONTROLE -->
 <!--        PODEMOS CUSTOMIZAR AS OPCOES-->
 <!--        COLOCAR PRA ATUALIZAR O VLAOR DO NG MODEL SO QUANDO APERTAR O TAB, OU QUANDO DAR SUBMIT-->
-        <input matInput type="email" name="email"
+<!--        STANDALONE TRUE TIRA DO PARENTE MAIOR, BASICAMENTE TA TRIANDO DO FORM ESSSE CONTROLE-->
+        <input matInput type="email"
                placeholder="Email"
-               [ngModelOptions]="{updateOn:'blur'}"
+               [ngModelOptions]="{name:'email',updateOn:'blur',standalone:true}"
                (ngModelChange)="onEmailChange($event)"
                ngModel #email="ngModel" email minlength="3"  maxlength="20" required>
         <mat-error *ngIf="email.errors?.required"> The email is Mandatory</mat-error>
@@ -47,6 +48,7 @@
       {{email.value|json}}
       {{email.errors |json}}
       {{email.valid }}
+      {{loginForm.value |json}}
     </div>
 
 
