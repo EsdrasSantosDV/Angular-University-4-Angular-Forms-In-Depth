@@ -15,11 +15,13 @@
 <!--        PODEMOS CUSTOMIZAR AS OPCOES-->
 <!--        COLOCAR PRA ATUALIZAR O VLAOR DO NG MODEL SO QUANDO APERTAR O TAB, OU QUANDO DAR SUBMIT-->
 <!--        STANDALONE TRUE TIRA DO PARENTE MAIOR, BASICAMENTE TA TRIANDO DO FORM ESSSE CONTROLE-->
+<!--BOX BANABAS-->
         <input matInput type="email"
                placeholder="Email"
-               [ngModelOptions]="{name:'email',updateOn:'blur',standalone:true}"
-               (ngModelChange)="onEmailChange($event)"
-               ngModel #email="ngModel" email minlength="3"  maxlength="20" required>
+               name="email"
+               [(ngModel)]="val.email"
+               #email="ngModel"
+               email minlength="3"  maxlength="20" required>
         <mat-error *ngIf="email.errors?.required"> The email is Mandatory</mat-error>
         <mat-error *ngIf="email.errors?.minlength"> Your email must have minimum {{email.errors?.minlength.requiredLength}} chars,
           but it only has {{email.errors?.minlength.actualLength}}.</mat-error>
@@ -30,7 +32,8 @@
       <mat-form-field  appearance="outline">
 
 
-        <input matInput type="password" placeholder="Password" name="password" ngModel #password="ngModel" required>
+        <input matInput type="password" placeholder="Password" name="password"
+               [(ngModel)]="val.password" #password="ngModel" required>
 
         <mat-error *ngIf="password.errors?.required"> The Password is Mandatory</mat-error>
 
@@ -45,9 +48,6 @@
     </form>
 
     <div class="form-val">
-      {{email.value|json}}
-      {{email.errors |json}}
-      {{email.valid }}
       {{loginForm.value |json}}
     </div>
 
